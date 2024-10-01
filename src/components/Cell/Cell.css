@@ -1,6 +1,6 @@
 .cell {
   align-items: center;
-  border: 2px solid #000;
+  border: 1px solid #000;
   display: flex;
   height: 40px;
   justify-content: center;

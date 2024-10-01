@@ -14,6 +14,7 @@ export default function Sudoku() {
     [0, 0, 0, 4, 1, 9, 0, 0, 5],
     [0, 0, 0, 0, 8, 0, 0, 7, 9],
   ]);
+  const blocks = getBlocks();
 
   function getBlocks() {
     let blockRow = [];
@@ -41,10 +42,14 @@ export default function Sudoku() {
 
   return (
     <div className="sudoku">
-      {grid.map((row, i) => (
-        <div key={i} className="row">
-          {row.map((cell, j) => (
-            <Cell key={j} value={cell} />
+      {blocks.map((block, i) => (
+        <div key={i} className="block">
+          {block.map((blockRow, j) => (
+            <div key={j} className="block-row">
+              {blockRow.map((cell, k) => (
+                <Cell key={k} value={cell} />
+              ))}
+            </div>
           ))}
         </div>
       ))}

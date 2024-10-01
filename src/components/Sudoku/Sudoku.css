@@ -1,3 +1,13 @@
-.sudoku .row {
-  display: flex;
+.sudoku {
+  border: 2px solid #000;
+  display: inline-grid;
+  grid-template-columns: repeat(3, min-content);
+  grid-template-rows: repeat(3, min-content);
+}
+.sudoku .block {
+  border: 1px solid #000;
+}
+.sudoku .block-row {
+  display: grid;
+  grid-template-columns: repeat(3, min-content);
 }
