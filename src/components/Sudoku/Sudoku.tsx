@@ -15,6 +15,30 @@ export default function Sudoku() {
     [0, 0, 0, 0, 8, 0, 0, 7, 9],
   ]);
 
+  function getBlocks() {
+    let blockRow = [];
+    let block = [];
+    let blocks = [];
+    let offsetRow = 0;
+    let offsetCol = 0;
+    for (let i = 0; i < 9; i++) {
+      for (let j = offsetRow; j < offsetRow + 3; j++) {
+        for (let k = offsetCol; k < offsetCol + 3; k++) {
+          blockRow.push(grid[j][k]);
+        }
+        block.push(blockRow);
+        blockRow = [];
+      }
+      blocks.push(block);
+      block = [];
+      if (offsetCol === 6) {
+        offsetCol = 0;
+        offsetRow += 3;
+      } else offsetCol += 3;
+    }
+    return blocks;
+  }
+
   return (
     <div className="sudoku">
       {grid.map((row, i) => (
