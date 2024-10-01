@@ -1,3 +1,5 @@
+import Sudoku from "./components/Sudoku/Sudoku.tsx";
+
 export default function App() {
-  return <h1>App</h1>;
+  return <Sudoku />;
 }
