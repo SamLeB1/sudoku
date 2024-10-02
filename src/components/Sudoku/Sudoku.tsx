@@ -2,6 +2,11 @@ import { useState } from "react";
 import Cell from "../Cell/Cell.tsx";
 import "./Sudoku.css";
 
+type Index = {
+  indexRow: number;
+  indexCol: number;
+};
+
 export default function Sudoku() {
   const [grid, setGrid] = useState([
     [5, 3, 0, 0, 7, 0, 0, 0, 0],
@@ -14,6 +19,7 @@ export default function Sudoku() {
     [0, 0, 0, 4, 1, 9, 0, 0, 5],
     [0, 0, 0, 0, 8, 0, 0, 7, 9],
   ]);
+  const [selectedCell, setSelectedCell] = useState<Index | null>(null);
   const blocks = getBlocks();
 
   function getBlocks() {
@@ -40,6 +46,57 @@ export default function Sudoku() {
     return blocks;
   }
 
+  // Converts cell index relative to block to cell index relative to grid.
+  function blockToGridIndex(blockIndex: number, cellIndex: Index): Index {
+    switch (blockIndex) {
+      case 0:
+        return cellIndex;
+      case 1:
+        return {
+          indexRow: cellIndex.indexRow,
+          indexCol: cellIndex.indexCol + 3,
+        };
+      case 2:
+        return {
+          indexRow: cellIndex.indexRow,
+          indexCol: cellIndex.indexCol + 6,
+        };
+      case 3:
+        return {
+          indexRow: cellIndex.indexRow + 3,
+          indexCol: cellIndex.indexCol,
+        };
+      case 4:
+        return {
+          indexRow: cellIndex.indexRow + 3,
+          indexCol: cellIndex.indexCol + 3,
+        };
+      case 5:
+        return {
+          indexRow: cellIndex.indexRow + 3,
+          indexCol: cellIndex.indexCol + 6,
+        };
+      case 6:
+        return {
+          indexRow: cellIndex.indexRow + 6,
+          indexCol: cellIndex.indexCol,
+        };
+      case 7:
+        return {
+          indexRow: cellIndex.indexRow + 6,
+          indexCol: cellIndex.indexCol + 3,
+        };
+      case 8:
+        return {
+          indexRow: cellIndex.indexRow + 6,
+          indexCol: cellIndex.indexCol + 6,
+        };
+      default:
+        console.error("Invalid block index.");
+        return cellIndex;
+    }
+  }
+
   return (
     <div className="sudoku">
       {blocks.map((block, i) => (
@@ -47,7 +104,12 @@ export default function Sudoku() {
           {block.map((blockRow, j) => (
             <div key={j} className="block-row">
               {blockRow.map((cell, k) => (
-                <Cell key={k} value={cell} />
+                <Cell
+                  key={k}
+                  value={cell}
+                  index={blockToGridIndex(i, { indexRow: j, indexCol: k })}
+                  setSelectedCell={setSelectedCell}
+                />
               ))}
             </div>
           ))}

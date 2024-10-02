@@ -1,9 +1,20 @@
 import "./Cell.css";
 
-type CellProps = {
-  value: number;
+type Index = {
+  indexRow: number;
+  indexCol: number;
 };
 
-export default function Cell({ value }: CellProps) {
-  return <div className="cell">{value !== 0 && value}</div>;
+type CellProps = {
+  value: number;
+  index: Index;
+  setSelectedCell: React.Dispatch<React.SetStateAction<Index | null>>;
+};
+
+export default function Cell({ value, index, setSelectedCell }: CellProps) {
+  return (
+    <div className="cell" onClick={() => setSelectedCell(index)}>
+      {value !== 0 && value}
+    </div>
+  );
 }
