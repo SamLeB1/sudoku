@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import useClickOutside from "../../hooks/useClickOutside.tsx";
 import Cell from "../Cell/Cell.tsx";
 import "./Sudoku.css";
 
@@ -21,6 +22,8 @@ export default function Sudoku() {
   ]);
   const [selectedCell, setSelectedCell] = useState<Index | null>(null);
   const blocks = getBlocks();
+  const sudokuRef = useRef(null);
+  useClickOutside(sudokuRef, () => setSelectedCell(null));
 
   function getBlocks() {
     let blockRow = [];
@@ -98,7 +101,7 @@ export default function Sudoku() {
   }
 
   return (
-    <div className="sudoku">
+    <div ref={sudokuRef} className="sudoku">
       {blocks.map((block, i) => (
         <div key={i} className="block">
           {block.map((blockRow, j) => (
