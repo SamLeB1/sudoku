@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useReducer, useRef } from "react";
 import useClickOutside from "../../hooks/useClickOutside.tsx";
 import Cell from "../Cell/Cell.tsx";
 import "./Sudoku.css";
@@ -8,18 +8,43 @@ type Index = {
   indexCol: number;
 };
 
+type GridAction = {
+  type: string;
+  payload: {
+    value: number;
+    index: Index;
+  };
+};
+
+const initialGrid = [
+  [5, 3, 0, 0, 7, 0, 0, 0, 0],
+  [6, 0, 0, 1, 9, 5, 0, 0, 0],
+  [0, 9, 8, 0, 0, 0, 0, 6, 0],
+  [8, 0, 0, 0, 6, 0, 0, 0, 3],
+  [4, 0, 0, 8, 0, 3, 0, 0, 1],
+  [7, 0, 0, 0, 2, 0, 0, 0, 6],
+  [0, 6, 0, 0, 0, 0, 2, 8, 0],
+  [0, 0, 0, 4, 1, 9, 0, 0, 5],
+  [0, 0, 0, 0, 8, 0, 0, 7, 9],
+];
+
+function reducer(state: number[][], action: GridAction) {
+  switch (action.type) {
+    case "INPUT":
+      const {
+        value,
+        index: { indexRow, indexCol },
+      } = action.payload;
+      let grid = [...state];
+      grid[indexRow][indexCol] = value;
+      return grid;
+    default:
+      return state;
+  }
+}
+
 export default function Sudoku() {
-  const [grid, setGrid] = useState([
-    [5, 3, 0, 0, 7, 0, 0, 0, 0],
-    [6, 0, 0, 1, 9, 5, 0, 0, 0],
-    [0, 9, 8, 0, 0, 0, 0, 6, 0],
-    [8, 0, 0, 0, 6, 0, 0, 0, 3],
-    [4, 0, 0, 8, 0, 3, 0, 0, 1],
-    [7, 0, 0, 0, 2, 0, 0, 0, 6],
-    [0, 6, 0, 0, 0, 0, 2, 8, 0],
-    [0, 0, 0, 4, 1, 9, 0, 0, 5],
-    [0, 0, 0, 0, 8, 0, 0, 7, 9],
-  ]);
+  const [grid, dispatch] = useReducer(reducer, initialGrid);
   const [selectedCell, setSelectedCell] = useState<Index | null>(null);
   const blocks = getBlocks();
   const sudokuRef = useRef(null);
