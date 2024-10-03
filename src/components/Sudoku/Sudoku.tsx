@@ -106,14 +106,23 @@ export default function Sudoku() {
         <div key={i} className="block">
           {block.map((blockRow, j) => (
             <div key={j} className="block-row">
-              {blockRow.map((cell, k) => (
-                <Cell
-                  key={k}
-                  value={cell}
-                  index={blockToGridIndex(i, { indexRow: j, indexCol: k })}
-                  setSelectedCell={setSelectedCell}
-                />
-              ))}
+              {blockRow.map((cell, k) => {
+                const indexGrid = blockToGridIndex(i, {
+                  indexRow: j,
+                  indexCol: k,
+                });
+                return (
+                  <Cell
+                    key={k}
+                    value={cell}
+                    index={indexGrid}
+                    setSelectedCell={setSelectedCell}
+                    isSelected={
+                      JSON.stringify(indexGrid) === JSON.stringify(selectedCell)
+                    }
+                  />
+                );
+              })}
             </div>
           ))}
         </div>

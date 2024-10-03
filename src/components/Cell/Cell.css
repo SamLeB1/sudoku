@@ -1,5 +1,15 @@
 .cell {
   align-items: center;
+  background-color: #fff;
+  border: 1px solid #000;
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+.cell-selected {
+  align-items: center;
+  background-color: hsl(240, 100%, 95%);
   border: 1px solid #000;
   display: flex;
   height: 40px;
