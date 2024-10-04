@@ -8,6 +8,11 @@ export type Index = {
   indexCol: number;
 };
 
+export type SelectedCell = {
+  index: Index;
+  canModify: boolean;
+};
+
 export type GridAction = {
   type: string;
   payload: {
@@ -44,7 +49,7 @@ export default function Sudoku() {
     [0, 0, 0, 0, 8, 0, 0, 7, 9],
   ];
   const [grid, dispatch] = useReducer(reducer, initialGrid);
-  const [selectedCell, setSelectedCell] = useState<Index | null>(null);
+  const [selectedCell, setSelectedCell] = useState<SelectedCell | null>(null);
   const blocks = getBlocks();
 
   function getBlocks() {
@@ -142,7 +147,7 @@ export default function Sudoku() {
                       setSelectedCell={setSelectedCell}
                       isSelected={
                         JSON.stringify(indexGrid) ===
-                        JSON.stringify(selectedCell)
+                        JSON.stringify(selectedCell?.index)
                       }
                       canModify={
                         initialGrid[indexGrid.indexRow][indexGrid.indexCol] ===

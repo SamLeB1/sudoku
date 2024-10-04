@@ -1,8 +1,8 @@
-import { Index, GridAction } from "../Sudoku/Sudoku.tsx";
+import { SelectedCell, GridAction } from "../Sudoku/Sudoku.tsx";
 import "./InputButtons.css";
 
 type InputButtonsProps = {
-  selectedCell: Index | null;
+  selectedCell: SelectedCell | null;
   dispatch: React.Dispatch<GridAction>;
 };
 
@@ -11,8 +11,11 @@ export default function InputButtons({
   dispatch,
 }: InputButtonsProps) {
   function handleClick(value: number) {
-    if (selectedCell)
-      dispatch({ type: "INPUT", payload: { value, index: selectedCell } });
+    if (selectedCell && selectedCell.canModify)
+      dispatch({
+        type: "INPUT",
+        payload: { value, index: selectedCell.index },
+      });
   }
 
   return (

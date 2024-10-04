@@ -1,10 +1,10 @@
-import { Index } from "../Sudoku/Sudoku.tsx";
+import { Index, SelectedCell } from "../Sudoku/Sudoku.tsx";
 import "./Cell.css";
 
 type CellProps = {
   value: number;
   index: Index;
-  setSelectedCell: React.Dispatch<React.SetStateAction<Index | null>>;
+  setSelectedCell: React.Dispatch<React.SetStateAction<SelectedCell | null>>;
   isSelected: boolean;
   canModify: boolean;
 };
@@ -26,7 +26,7 @@ export default function Cell({
       className="cell"
       style={cellStyle}
       onClick={() => {
-        if (!isSelected) setSelectedCell(index);
+        if (!isSelected) setSelectedCell({ index, canModify });
       }}
     >
       {value !== 0 && value}
