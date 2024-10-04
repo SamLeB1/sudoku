@@ -1,14 +1,14 @@
-import { useState, useReducer, useRef } from "react";
-import useClickOutside from "../../hooks/useClickOutside.tsx";
+import { useState, useReducer } from "react";
 import Cell from "../Cell/Cell.tsx";
+import InputButtons from "../InputButtons/InputButtons.tsx";
 import "./Sudoku.css";
 
-type Index = {
+export type Index = {
   indexRow: number;
   indexCol: number;
 };
 
-type GridAction = {
+export type GridAction = {
   type: string;
   payload: {
     value: number;
@@ -47,8 +47,6 @@ export default function Sudoku() {
   const [grid, dispatch] = useReducer(reducer, initialGrid);
   const [selectedCell, setSelectedCell] = useState<Index | null>(null);
   const blocks = getBlocks();
-  const sudokuRef = useRef(null);
-  useClickOutside(sudokuRef, () => setSelectedCell(null));
 
   function getBlocks() {
     let blockRow = [];
@@ -126,32 +124,36 @@ export default function Sudoku() {
   }
 
   return (
-    <div ref={sudokuRef} className="sudoku">
-      {blocks.map((block, i) => (
-        <div key={i} className="block">
-          {block.map((blockRow, j) => (
-            <div key={j} className="block-row">
-              {blockRow.map((cell, k) => {
-                const indexGrid = blockToGridIndex(i, {
-                  indexRow: j,
-                  indexCol: k,
-                });
-                return (
-                  <Cell
-                    key={k}
-                    value={cell}
-                    index={indexGrid}
-                    setSelectedCell={setSelectedCell}
-                    isSelected={
-                      JSON.stringify(indexGrid) === JSON.stringify(selectedCell)
-                    }
-                  />
-                );
-              })}
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
+    <>
+      <div className="sudoku">
+        {blocks.map((block, i) => (
+          <div key={i} className="block">
+            {block.map((blockRow, j) => (
+              <div key={j} className="block-row">
+                {blockRow.map((cell, k) => {
+                  const indexGrid = blockToGridIndex(i, {
+                    indexRow: j,
+                    indexCol: k,
+                  });
+                  return (
+                    <Cell
+                      key={k}
+                      value={cell}
+                      index={indexGrid}
+                      setSelectedCell={setSelectedCell}
+                      isSelected={
+                        JSON.stringify(indexGrid) ===
+                        JSON.stringify(selectedCell)
+                      }
+                    />
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+      <InputButtons selectedCell={selectedCell} dispatch={dispatch} />
+    </>
   );
 }

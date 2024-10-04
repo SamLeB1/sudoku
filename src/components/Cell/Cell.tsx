@@ -1,9 +1,5 @@
+import { Index } from "../Sudoku/Sudoku.tsx";
 import "./Cell.css";
-
-type Index = {
-  indexRow: number;
-  indexCol: number;
-};
 
 type CellProps = {
   value: number;
