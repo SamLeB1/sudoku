@@ -6,6 +6,7 @@ type CellProps = {
   index: Index;
   setSelectedCell: React.Dispatch<React.SetStateAction<Index | null>>;
   isSelected: boolean;
+  canModify: boolean;
 };
 
 export default function Cell({
@@ -13,13 +14,22 @@ export default function Cell({
   index,
   setSelectedCell,
   isSelected,
+  canModify,
 }: CellProps) {
-  if (isSelected)
-    return <div className="cell-selected">{value !== 0 && value}</div>;
-  else
-    return (
-      <div className="cell" onClick={() => setSelectedCell(index)}>
-        {value !== 0 && value}
-      </div>
-    );
+  const cellStyle = {
+    ...(isSelected && { backgroundColor: "hsl(240, 100%, 95%)" }),
+    ...(canModify ? { color: "#808080" } : { fontWeight: "bold" }),
+  };
+
+  return (
+    <div
+      className="cell"
+      style={cellStyle}
+      onClick={() => {
+        if (!isSelected) setSelectedCell(index);
+      }}
+    >
+      {value !== 0 && value}
+    </div>
+  );
 }

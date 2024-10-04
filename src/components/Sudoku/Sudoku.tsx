@@ -16,18 +16,6 @@ export type GridAction = {
   };
 };
 
-const initialGrid = [
-  [5, 3, 0, 0, 7, 0, 0, 0, 0],
-  [6, 0, 0, 1, 9, 5, 0, 0, 0],
-  [0, 9, 8, 0, 0, 0, 0, 6, 0],
-  [8, 0, 0, 0, 6, 0, 0, 0, 3],
-  [4, 0, 0, 8, 0, 3, 0, 0, 1],
-  [7, 0, 0, 0, 2, 0, 0, 0, 6],
-  [0, 6, 0, 0, 0, 0, 2, 8, 0],
-  [0, 0, 0, 4, 1, 9, 0, 0, 5],
-  [0, 0, 0, 0, 8, 0, 0, 7, 9],
-];
-
 function reducer(state: number[][], action: GridAction) {
   switch (action.type) {
     case "INPUT":
@@ -44,6 +32,17 @@ function reducer(state: number[][], action: GridAction) {
 }
 
 export default function Sudoku() {
+  const initialGrid = [
+    [5, 3, 0, 0, 7, 0, 0, 0, 0],
+    [6, 0, 0, 1, 9, 5, 0, 0, 0],
+    [0, 9, 8, 0, 0, 0, 0, 6, 0],
+    [8, 0, 0, 0, 6, 0, 0, 0, 3],
+    [4, 0, 0, 8, 0, 3, 0, 0, 1],
+    [7, 0, 0, 0, 2, 0, 0, 0, 6],
+    [0, 6, 0, 0, 0, 0, 2, 8, 0],
+    [0, 0, 0, 4, 1, 9, 0, 0, 5],
+    [0, 0, 0, 0, 8, 0, 0, 7, 9],
+  ];
   const [grid, dispatch] = useReducer(reducer, initialGrid);
   const [selectedCell, setSelectedCell] = useState<Index | null>(null);
   const blocks = getBlocks();
@@ -144,6 +143,10 @@ export default function Sudoku() {
                       isSelected={
                         JSON.stringify(indexGrid) ===
                         JSON.stringify(selectedCell)
+                      }
+                      canModify={
+                        initialGrid[indexGrid.indexRow][indexGrid.indexCol] ===
+                        0
                       }
                     />
                   );
