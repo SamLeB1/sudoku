@@ -1,4 +1,4 @@
-import { useState, useReducer } from "react";
+import { useReducer } from "react";
 import Cell from "../Cell/Cell.tsx";
 import InputButtons from "../InputButtons/InputButtons.tsx";
 import "./Sudoku.css";
@@ -13,24 +13,38 @@ export type SelectedCell = {
   canModify: boolean;
 };
 
-export type GridAction = {
-  type: string;
+export type GridState = {
+  grid: number[][];
+  selectedCell: SelectedCell | null;
+};
+
+export type GridInputAction = {
+  type: "INPUT";
   payload: {
     value: number;
     index: Index;
   };
 };
 
-function reducer(state: number[][], action: GridAction) {
+export type GridSelectAction = {
+  type: "SELECT";
+  payload: SelectedCell;
+};
+
+export type GridAction = GridInputAction | GridSelectAction;
+
+function reducerGrid(state: GridState, action: GridAction) {
   switch (action.type) {
     case "INPUT":
       const {
         value,
         index: { indexRow, indexCol },
       } = action.payload;
-      let grid = [...state];
+      let grid = [...state.grid];
       grid[indexRow][indexCol] = value;
-      return grid;
+      return { ...state, grid };
+    case "SELECT":
+      return { ...state, selectedCell: action.payload };
     default:
       return state;
   }
@@ -48,8 +62,10 @@ export default function Sudoku() {
     [0, 0, 0, 4, 1, 9, 0, 0, 5],
     [0, 0, 0, 0, 8, 0, 0, 7, 9],
   ];
-  const [grid, dispatch] = useReducer(reducer, initialGrid);
-  const [selectedCell, setSelectedCell] = useState<SelectedCell | null>(null);
+  const [stateGrid, dispatchGrid] = useReducer(reducerGrid, {
+    grid: initialGrid,
+    selectedCell: null,
+  });
   const blocks = getBlocks();
 
   function getBlocks() {
@@ -61,7 +77,7 @@ export default function Sudoku() {
     for (let i = 0; i < 9; i++) {
       for (let j = offsetRow; j < offsetRow + 3; j++) {
         for (let k = offsetCol; k < offsetCol + 3; k++) {
-          blockRow.push(grid[j][k]);
+          blockRow.push(stateGrid.grid[j][k]);
         }
         block.push(blockRow);
         blockRow = [];
@@ -144,15 +160,15 @@ export default function Sudoku() {
                       key={k}
                       value={cell}
                       index={indexGrid}
-                      setSelectedCell={setSelectedCell}
                       isSelected={
                         JSON.stringify(indexGrid) ===
-                        JSON.stringify(selectedCell?.index)
+                        JSON.stringify(stateGrid.selectedCell?.index)
                       }
                       canModify={
                         initialGrid[indexGrid.indexRow][indexGrid.indexCol] ===
                         0
                       }
+                      dispatchGrid={dispatchGrid}
                     />
                   );
                 })}
@@ -161,7 +177,10 @@ export default function Sudoku() {
           </div>
         ))}
       </div>
-      <InputButtons selectedCell={selectedCell} dispatch={dispatch} />
+      <InputButtons
+        selectedCell={stateGrid.selectedCell}
+        dispatchGrid={dispatchGrid}
+      />
     </>
   );
 }

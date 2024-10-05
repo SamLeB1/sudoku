@@ -3,16 +3,16 @@ import "./InputButtons.css";
 
 type InputButtonsProps = {
   selectedCell: SelectedCell | null;
-  dispatch: React.Dispatch<GridAction>;
+  dispatchGrid: React.Dispatch<GridAction>;
 };
 
 export default function InputButtons({
   selectedCell,
-  dispatch,
+  dispatchGrid,
 }: InputButtonsProps) {
   function handleClick(value: number) {
     if (selectedCell && selectedCell.canModify)
-      dispatch({
+      dispatchGrid({
         type: "INPUT",
         payload: { value, index: selectedCell.index },
       });

@@ -1,20 +1,20 @@
-import { Index, SelectedCell } from "../Sudoku/Sudoku.tsx";
+import { Index, GridAction } from "../Sudoku/Sudoku.tsx";
 import "./Cell.css";
 
 type CellProps = {
   value: number;
   index: Index;
-  setSelectedCell: React.Dispatch<React.SetStateAction<SelectedCell | null>>;
   isSelected: boolean;
   canModify: boolean;
+  dispatchGrid: React.Dispatch<GridAction>;
 };
 
 export default function Cell({
   value,
   index,
-  setSelectedCell,
   isSelected,
   canModify,
+  dispatchGrid,
 }: CellProps) {
   const cellStyle = {
     ...(isSelected && { backgroundColor: "hsl(240, 100%, 95%)" }),
@@ -26,7 +26,8 @@ export default function Cell({
       className="cell"
       style={cellStyle}
       onClick={() => {
-        if (!isSelected) setSelectedCell({ index, canModify });
+        if (!isSelected)
+          dispatchGrid({ type: "SELECT", payload: { index, canModify } });
       }}
     >
       {value !== 0 && value}
