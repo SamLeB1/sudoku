@@ -1,4 +1,5 @@
-import { Index, GridAction } from "../Sudoku/Sudoku.tsx";
+import { Index } from "../Sudoku/Sudoku.tsx";
+import useGridContext from "../../hooks/useGridContext.tsx";
 import "./Cell.css";
 
 type CellProps = {
@@ -6,7 +7,6 @@ type CellProps = {
   index: Index;
   isSelected: boolean;
   canModify: boolean;
-  dispatchGrid: React.Dispatch<GridAction>;
 };
 
 export default function Cell({
@@ -14,8 +14,8 @@ export default function Cell({
   index,
   isSelected,
   canModify,
-  dispatchGrid,
 }: CellProps) {
+  const { dispatchGrid } = useGridContext();
   const cellStyle = {
     ...(isSelected && { backgroundColor: "hsl(240, 100%, 95%)" }),
     ...(canModify ? { color: "#808080" } : { fontWeight: "bold" }),

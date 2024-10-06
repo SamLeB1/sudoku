@@ -1,6 +1,6 @@
-import { useReducer } from "react";
+import { useEffect } from "react";
+import useGridContext from "../../hooks/useGridContext.tsx";
 import Cell from "../Cell/Cell.tsx";
-import InputButtons from "../InputButtons/InputButtons.tsx";
 import "./Sudoku.css";
 
 export type Index = {
@@ -13,59 +13,20 @@ export type SelectedCell = {
   canModify: boolean;
 };
 
-export type GridState = {
-  grid: number[][];
-  selectedCell: SelectedCell | null;
-};
-
-export type GridInputAction = {
-  type: "INPUT";
-  payload: {
-    value: number;
-    index: Index;
-  };
-};
-
-export type GridSelectAction = {
-  type: "SELECT";
-  payload: SelectedCell;
-};
-
-export type GridAction = GridInputAction | GridSelectAction;
-
-function reducerGrid(state: GridState, action: GridAction) {
-  switch (action.type) {
-    case "INPUT":
-      const {
-        value,
-        index: { indexRow, indexCol },
-      } = action.payload;
-      let grid = [...state.grid];
-      grid[indexRow][indexCol] = value;
-      return { ...state, grid };
-    case "SELECT":
-      return { ...state, selectedCell: action.payload };
-    default:
-      return state;
-  }
-}
+const loadedGrid = [
+  [5, 3, 0, 0, 7, 0, 0, 0, 0],
+  [6, 0, 0, 1, 9, 5, 0, 0, 0],
+  [0, 9, 8, 0, 0, 0, 0, 6, 0],
+  [8, 0, 0, 0, 6, 0, 0, 0, 3],
+  [4, 0, 0, 8, 0, 3, 0, 0, 1],
+  [7, 0, 0, 0, 2, 0, 0, 0, 6],
+  [0, 6, 0, 0, 0, 0, 2, 8, 0],
+  [0, 0, 0, 4, 1, 9, 0, 0, 5],
+  [0, 0, 0, 0, 8, 0, 0, 7, 9],
+];
 
 export default function Sudoku() {
-  const initialGrid = [
-    [5, 3, 0, 0, 7, 0, 0, 0, 0],
-    [6, 0, 0, 1, 9, 5, 0, 0, 0],
-    [0, 9, 8, 0, 0, 0, 0, 6, 0],
-    [8, 0, 0, 0, 6, 0, 0, 0, 3],
-    [4, 0, 0, 8, 0, 3, 0, 0, 1],
-    [7, 0, 0, 0, 2, 0, 0, 0, 6],
-    [0, 6, 0, 0, 0, 0, 2, 8, 0],
-    [0, 0, 0, 4, 1, 9, 0, 0, 5],
-    [0, 0, 0, 0, 8, 0, 0, 7, 9],
-  ];
-  const [stateGrid, dispatchGrid] = useReducer(reducerGrid, {
-    grid: initialGrid,
-    selectedCell: null,
-  });
+  const { stateGrid, dispatchGrid } = useGridContext();
   const blocks = getBlocks();
 
   function getBlocks() {
@@ -143,44 +104,42 @@ export default function Sudoku() {
     }
   }
 
+  useEffect(() => {
+    dispatchGrid({ type: "SET", payload: loadedGrid });
+  }, []);
+
   return (
-    <>
-      <div className="sudoku">
-        {blocks.map((block, i) => (
-          <div key={i} className="block">
-            {block.map((blockRow, j) => (
-              <div key={j} className="block-row">
-                {blockRow.map((cell, k) => {
-                  const indexGrid = blockToGridIndex(i, {
-                    indexRow: j,
-                    indexCol: k,
-                  });
-                  return (
-                    <Cell
-                      key={k}
-                      value={cell}
-                      index={indexGrid}
-                      isSelected={
-                        JSON.stringify(indexGrid) ===
-                        JSON.stringify(stateGrid.selectedCell?.index)
-                      }
-                      canModify={
-                        initialGrid[indexGrid.indexRow][indexGrid.indexCol] ===
-                        0
-                      }
-                      dispatchGrid={dispatchGrid}
-                    />
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-      <InputButtons
-        selectedCell={stateGrid.selectedCell}
-        dispatchGrid={dispatchGrid}
-      />
-    </>
+    <div className="sudoku">
+      {blocks.map((block, i) => (
+        <div key={i} className="block">
+          {block.map((blockRow, j) => (
+            <div key={j} className="block-row">
+              {blockRow.map((cell, k) => {
+                const indexGrid = blockToGridIndex(i, {
+                  indexRow: j,
+                  indexCol: k,
+                });
+                return (
+                  <Cell
+                    key={k}
+                    value={cell}
+                    index={indexGrid}
+                    isSelected={
+                      JSON.stringify(indexGrid) ===
+                      JSON.stringify(stateGrid.selectedCell?.index)
+                    }
+                    canModify={
+                      stateGrid.initialGrid[indexGrid.indexRow][
+                        indexGrid.indexCol
+                      ] === 0
+                    }
+                  />
+                );
+              })}
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
   );
 }

@@ -1,20 +1,14 @@
-import { SelectedCell, GridAction } from "../Sudoku/Sudoku.tsx";
+import useGridContext from "../../hooks/useGridContext.tsx";
 import "./InputButtons.css";
 
-type InputButtonsProps = {
-  selectedCell: SelectedCell | null;
-  dispatchGrid: React.Dispatch<GridAction>;
-};
+export default function InputButtons() {
+  const { stateGrid, dispatchGrid } = useGridContext();
 
-export default function InputButtons({
-  selectedCell,
-  dispatchGrid,
-}: InputButtonsProps) {
   function handleClick(value: number) {
-    if (selectedCell && selectedCell.canModify)
+    if (stateGrid.selectedCell?.canModify)
       dispatchGrid({
         type: "INPUT",
-        payload: { value, index: selectedCell.index },
+        payload: { value, index: stateGrid.selectedCell.index },
       });
   }
 
