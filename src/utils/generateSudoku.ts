@@ -60,3 +60,54 @@ function getFilledSudoku() {
   fillSudoku(sudoku);
   return sudoku;
 }
+
+function getClueCount(sudoku: number[][]) {
+  let clueCount = 0;
+  for (let i = 0; i < 9; i++)
+    for (let j = 0; j < 9; j++) if (sudoku[i][j] !== 0) clueCount++;
+  return clueCount;
+}
+
+function getSolutionCount(
+  sudoku: number[][],
+  solutionCount: { count: number }
+) {
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      if (sudoku[i][j] === 0) {
+        for (let n = 1; n < 10; n++) {
+          if (canPlaceNumber(sudoku, i, j, n)) {
+            sudoku[i][j] = n;
+            getSolutionCount(sudoku, solutionCount);
+            sudoku[i][j] = 0;
+          }
+        }
+        return;
+      }
+    }
+  }
+  solutionCount.count++;
+}
+
+export default function generateSudoku(clueCount: number) {
+  let sudoku = getFilledSudoku();
+  const solution: number[][] = JSON.parse(JSON.stringify(sudoku));
+  let attempts = 0;
+  while (clueCount < getClueCount(sudoku)) {
+    if (attempts === 250) {
+      sudoku = JSON.parse(JSON.stringify(solution));
+      attempts = 0;
+    }
+    const i = Math.floor(Math.random() * 9);
+    const j = Math.floor(Math.random() * 9);
+    if (sudoku[i][j] !== 0) {
+      const backup = sudoku[i][j];
+      sudoku[i][j] = 0;
+      let solutionCount = { count: 0 };
+      getSolutionCount(sudoku, solutionCount);
+      if (solutionCount.count !== 1) sudoku[i][j] = backup;
+    }
+    attempts++;
+  }
+  return { sudoku, solution };
+}
