@@ -18,7 +18,7 @@ export default function Cell({
   const { dispatchGrid } = useGridContext();
   const cellStyle = {
     ...(isSelected && { backgroundColor: "hsl(240, 100%, 95%)" }),
-    ...(canModify ? { color: "#808080" } : { fontWeight: "bold" }),
+    ...(canModify ? { color: "#3f72af" } : { fontWeight: "bold" }),
   };
 
   return (
