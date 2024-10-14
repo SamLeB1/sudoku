@@ -1,7 +1,10 @@
+import useAppContext from "../../hooks/useAppContext.tsx";
 import useGridContext from "../../hooks/useGridContext.tsx";
+import generateSudoku from "../../utils/generateSudoku.ts";
 import "./InputButtons.css";
 
 export default function InputButtons() {
+  const { stateApp } = useAppContext();
   const { stateGrid, dispatchGrid } = useGridContext();
 
   function handleClick(value: number) {
@@ -10,6 +13,25 @@ export default function InputButtons() {
         type: "INPUT",
         payload: { value, index: stateGrid.selectedCell.index },
       });
+  }
+
+  function handleNewGame() {
+    switch (stateApp.difficulty) {
+      case "easy":
+        dispatchGrid({ type: "SET", payload: generateSudoku(40).sudoku });
+        return;
+      case "medium":
+        dispatchGrid({ type: "SET", payload: generateSudoku(35).sudoku });
+        return;
+      case "hard":
+        dispatchGrid({ type: "SET", payload: generateSudoku(30).sudoku });
+        return;
+      case "expert":
+        dispatchGrid({ type: "SET", payload: generateSudoku(26).sudoku });
+        return;
+      default:
+        console.error("Invalid difficulty.");
+    }
   }
 
   return (
@@ -93,7 +115,7 @@ export default function InputButtons() {
           9
         </button>
       </div>
-      <button className="btn-new-game" type="button">
+      <button className="btn-new-game" type="button" onClick={handleNewGame}>
         New Game
       </button>
     </div>

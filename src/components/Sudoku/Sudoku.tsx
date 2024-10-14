@@ -94,8 +94,7 @@ export default function Sudoku() {
   }
 
   useEffect(() => {
-    const sudoku = generateSudoku(38);
-    dispatchGrid({ type: "SET", payload: sudoku.sudoku });
+    dispatchGrid({ type: "SET", payload: generateSudoku(40).sudoku });
   }, []);
 
   return (
