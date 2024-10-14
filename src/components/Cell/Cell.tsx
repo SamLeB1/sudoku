@@ -5,6 +5,10 @@ import "./Cell.css";
 type CellProps = {
   value: number;
   index: Index;
+  highlights: {
+    isSameSection: boolean;
+    isSameNumber: boolean;
+  };
   isSelected: boolean;
   canModify: boolean;
 };
@@ -12,12 +16,16 @@ type CellProps = {
 export default function Cell({
   value,
   index,
+  highlights,
   isSelected,
   canModify,
 }: CellProps) {
   const { dispatchGrid } = useGridContext();
   const cellStyle = {
-    ...(isSelected && { backgroundColor: "hsl(240, 100%, 95%)" }),
+    ...(highlights.isSameSection && { backgroundColor: "hsl(240, 100%, 95%)" }),
+    ...(highlights.isSameNumber &&
+      value !== 0 && { backgroundColor: "hsl(60, 100%, 95%)" }),
+    ...(isSelected && { backgroundColor: "hsl(240, 100%, 90%)" }),
     ...(canModify ? { color: "#3f72af" } : { fontWeight: "bold" }),
   };
 
@@ -27,7 +35,10 @@ export default function Cell({
       style={cellStyle}
       onClick={() => {
         if (!isSelected)
-          dispatchGrid({ type: "SELECT", payload: { index, canModify } });
+          dispatchGrid({
+            type: "SELECT",
+            payload: { value, index, canModify },
+          });
       }}
     >
       {value !== 0 && value}

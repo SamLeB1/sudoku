@@ -10,6 +10,7 @@ export type Index = {
 };
 
 export type SelectedCell = {
+  value: number;
   index: Index;
   canModify: boolean;
 };
@@ -93,6 +94,18 @@ export default function Sudoku() {
     }
   }
 
+  // Check if indexes are in same row, column, or block.
+  function isSameSection(index1: Index, index2: Index) {
+    if (
+      index1.indexRow === index2.indexRow ||
+      index1.indexCol === index2.indexCol ||
+      (Math.floor(index1.indexRow / 3) === Math.floor(index2.indexRow / 3) &&
+        Math.floor(index1.indexCol / 3) === Math.floor(index2.indexCol / 3))
+    )
+      return true;
+    return false;
+  }
+
   useEffect(() => {
     dispatchGrid({ type: "SET", payload: generateSudoku(40).sudoku });
   }, []);
@@ -113,6 +126,17 @@ export default function Sudoku() {
                     key={k}
                     value={cell}
                     index={indexGrid}
+                    highlights={{
+                      ...(stateGrid.selectedCell
+                        ? {
+                            isSameSection: isSameSection(
+                              indexGrid,
+                              stateGrid.selectedCell.index
+                            ),
+                            isSameNumber: cell === stateGrid.selectedCell.value,
+                          }
+                        : { isSameSection: false, isSameNumber: false }),
+                    }}
                     isSelected={
                       JSON.stringify(indexGrid) ===
                       JSON.stringify(stateGrid.selectedCell?.index)
