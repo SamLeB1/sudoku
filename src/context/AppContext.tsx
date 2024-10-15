@@ -1,7 +1,7 @@
 import { createContext, useState } from "react";
 
 type AppState = {
-  difficulty: "easy" | "medium" | "hard" | "expert";
+  difficulty: "Easy" | "Medium" | "Hard" | "Expert";
 };
 
 type AppContextValue = {
@@ -16,7 +16,7 @@ export function AppContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [stateApp, setStateApp] = useState<AppState>({ difficulty: "easy" });
+  const [stateApp, setStateApp] = useState<AppState>({ difficulty: "Easy" });
 
   return (
     <AppContext.Provider value={{ stateApp, setStateApp }}>

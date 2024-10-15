@@ -3,7 +3,7 @@ import useGridContext from "../../hooks/useGridContext.tsx";
 import generateSudoku from "../../utils/generateSudoku.ts";
 import "./Header.css";
 
-type Difficulty = "easy" | "medium" | "hard" | "expert";
+type Difficulty = "Easy" | "Medium" | "Hard" | "Expert";
 
 export default function Header() {
   const { stateApp, setStateApp } = useAppContext();
@@ -22,9 +22,9 @@ export default function Header() {
           className="btn-difficulty"
           type="button"
           style={{
-            ...(stateApp.difficulty === "easy" && { color: "#3f72af" }),
+            ...(stateApp.difficulty === "Easy" && { color: "#3f72af" }),
           }}
-          onClick={() => handleSetDifficulty("easy", 40)}
+          onClick={() => handleSetDifficulty("Easy", 40)}
         >
           Easy
         </button>
@@ -32,9 +32,9 @@ export default function Header() {
           className="btn-difficulty"
           type="button"
           style={{
-            ...(stateApp.difficulty === "medium" && { color: "#3f72af" }),
+            ...(stateApp.difficulty === "Medium" && { color: "#3f72af" }),
           }}
-          onClick={() => handleSetDifficulty("medium", 35)}
+          onClick={() => handleSetDifficulty("Medium", 35)}
         >
           Medium
         </button>
@@ -42,9 +42,9 @@ export default function Header() {
           className="btn-difficulty"
           type="button"
           style={{
-            ...(stateApp.difficulty === "hard" && { color: "#3f72af" }),
+            ...(stateApp.difficulty === "Hard" && { color: "#3f72af" }),
           }}
-          onClick={() => handleSetDifficulty("hard", 30)}
+          onClick={() => handleSetDifficulty("Hard", 30)}
         >
           Hard
         </button>
@@ -52,9 +52,9 @@ export default function Header() {
           className="btn-difficulty"
           type="button"
           style={{
-            ...(stateApp.difficulty === "expert" && { color: "#3f72af" }),
+            ...(stateApp.difficulty === "Expert" && { color: "#3f72af" }),
           }}
-          onClick={() => handleSetDifficulty("expert", 26)}
+          onClick={() => handleSetDifficulty("Expert", 26)}
         >
           Expert
         </button>

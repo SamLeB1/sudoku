@@ -17,16 +17,16 @@ export default function InputButtons() {
 
   function handleNewGame() {
     switch (stateApp.difficulty) {
-      case "easy":
+      case "Easy":
         dispatchGrid({ type: "SET", payload: generateSudoku(40).sudoku });
         return;
-      case "medium":
+      case "Medium":
         dispatchGrid({ type: "SET", payload: generateSudoku(35).sudoku });
         return;
-      case "hard":
+      case "Hard":
         dispatchGrid({ type: "SET", payload: generateSudoku(30).sudoku });
         return;
-      case "expert":
+      case "Expert":
         dispatchGrid({ type: "SET", payload: generateSudoku(26).sudoku });
         return;
       default:

@@ -1,6 +1,12 @@
 .App .game {
+  margin: auto;
+  width: fit-content;
+}
+.App .game-display {
   display: flex;
-  justify-content: center;
+}
+.App .game-info {
+  margin-bottom: 0.5rem;
 }
 .App .sudoku {
   margin-right: 2rem;
