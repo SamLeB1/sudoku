@@ -38,7 +38,10 @@ export default function InputButtons() {
     <div className="input-buttons">
       <div className="action-buttons">
         <div className="btn-action">
-          <button type="button" />
+          <button
+            type="button"
+            onClick={() => dispatchGrid({ type: "UNDO" })}
+          />
           <p>Undo</p>
         </div>
         <div className="btn-action">

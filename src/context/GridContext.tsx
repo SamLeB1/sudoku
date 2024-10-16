@@ -5,6 +5,7 @@ type GridState = {
   grid: number[][];
   initialGrid: number[][];
   selectedCell: SelectedCell | null;
+  undoInputs: GridInputAction["payload"][];
 };
 
 type GridSetAction = {
@@ -20,12 +21,18 @@ type GridInputAction = {
   };
 };
 
+type GridUndoAction = { type: "UNDO" };
+
 type GridSelectAction = {
   type: "SELECT";
   payload: SelectedCell;
 };
 
-type GridAction = GridSetAction | GridInputAction | GridSelectAction;
+type GridAction =
+  | GridSetAction
+  | GridInputAction
+  | GridUndoAction
+  | GridSelectAction;
 
 type GridContextValue = {
   stateGrid: GridState;
@@ -53,15 +60,42 @@ function reducerGrid(state: GridState, action: GridAction) {
         grid: action.payload,
         initialGrid: action.payload,
         selectedCell: null,
+        undoInputs: [],
       };
-    case "INPUT":
+    case "INPUT": {
       const {
         value,
         index: { indexRow, indexCol },
       } = action.payload;
+
       let grid = JSON.parse(JSON.stringify(state.grid));
       grid[indexRow][indexCol] = value;
-      return { ...state, grid };
+
+      let selectedCell = { ...action.payload, canModify: true };
+
+      let undoInputs = JSON.parse(JSON.stringify(state.undoInputs));
+      undoInputs.unshift({
+        value: state.grid[indexRow][indexCol],
+        index: { indexRow, indexCol },
+      });
+      return { ...state, grid, selectedCell, undoInputs };
+    }
+    case "UNDO": {
+      if (state.undoInputs.length === 0) return state;
+      const {
+        value,
+        index: { indexRow, indexCol },
+      } = state.undoInputs[0];
+
+      let grid = JSON.parse(JSON.stringify(state.grid));
+      grid[indexRow][indexCol] = value;
+
+      let selectedCell = { ...state.undoInputs[0], canModify: true };
+
+      let undoInputs = JSON.parse(JSON.stringify(state.undoInputs));
+      undoInputs.shift();
+      return { ...state, grid, selectedCell, undoInputs };
+    }
     case "SELECT":
       return { ...state, selectedCell: action.payload };
     default:
@@ -78,6 +112,7 @@ export function GridContextProvider({
     grid: initialGrid,
     initialGrid,
     selectedCell: null,
+    undoInputs: [],
   });
 
   return (
