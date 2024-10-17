@@ -6,6 +6,8 @@
   display: flex;
 }
 .App .game-info {
+  display: flex;
+  gap: 1rem;
   margin-bottom: 0.5rem;
 }
 .App .sudoku {

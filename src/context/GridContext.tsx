@@ -7,6 +7,7 @@ type GridState = {
   solvedGrid: number[][];
   selectedCell: SelectedCell | null;
   undoInputs: GridInputAction["payload"][];
+  hintCount: number;
 };
 
 type GridSetAction = {
@@ -70,6 +71,7 @@ function reducerGrid(state: GridState, action: GridAction) {
         solvedGrid,
         selectedCell: null,
         undoInputs: [],
+        hintCount: 0,
       };
     case "INPUT": {
       const {
@@ -125,8 +127,24 @@ function reducerGrid(state: GridState, action: GridAction) {
       let initialGrid = JSON.parse(JSON.stringify(state.initialGrid));
       grid[indexRow][indexCol] = value;
       initialGrid[indexRow][indexCol] = value;
-      let selectedCell = { ...hints[i], canModify: false };
-      return { ...state, grid, initialGrid, selectedCell };
+
+      const undoInputs = state.undoInputs.filter((undoInput) => {
+        return (
+          undoInput.index.indexRow !== indexRow ||
+          undoInput.index.indexCol !== indexCol
+        );
+      });
+
+      const selectedCell = { ...hints[i], canModify: false };
+      const hintCount = state.hintCount + 1;
+      return {
+        ...state,
+        grid,
+        initialGrid,
+        selectedCell,
+        undoInputs,
+        hintCount,
+      };
     }
     case "SELECT":
       return { ...state, selectedCell: action.payload };
@@ -146,6 +164,7 @@ export function GridContextProvider({
     solvedGrid: initialGrid,
     selectedCell: null,
     undoInputs: [],
+    hintCount: 0,
   });
 
   return (
