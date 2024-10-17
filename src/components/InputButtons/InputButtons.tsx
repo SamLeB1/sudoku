@@ -16,22 +16,19 @@ export default function InputButtons() {
   }
 
   function handleNewGame() {
-    switch (stateApp.difficulty) {
-      case "Easy":
-        dispatchGrid({ type: "SET", payload: generateSudoku(40).sudoku });
-        return;
-      case "Medium":
-        dispatchGrid({ type: "SET", payload: generateSudoku(35).sudoku });
-        return;
-      case "Hard":
-        dispatchGrid({ type: "SET", payload: generateSudoku(30).sudoku });
-        return;
-      case "Expert":
-        dispatchGrid({ type: "SET", payload: generateSudoku(26).sudoku });
-        return;
-      default:
-        console.error("Invalid difficulty.");
-    }
+    const clueCount =
+      stateApp.difficulty === "Easy"
+        ? 40
+        : stateApp.difficulty === "Medium"
+        ? 35
+        : stateApp.difficulty === "Hard"
+        ? 30
+        : 26;
+    const sudoku = generateSudoku(clueCount);
+    dispatchGrid({
+      type: "SET",
+      payload: { initialGrid: sudoku.sudoku, solvedGrid: sudoku.solution },
+    });
   }
 
   return (
@@ -49,7 +46,10 @@ export default function InputButtons() {
           <p>Erase</p>
         </div>
         <div className="btn-action">
-          <button type="button" />
+          <button
+            type="button"
+            onClick={() => dispatchGrid({ type: "HINT" })}
+          />
           <p>Hint</p>
         </div>
       </div>

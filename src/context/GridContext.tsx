@@ -4,13 +4,17 @@ import { Index, SelectedCell } from "../components/Sudoku/Sudoku.tsx";
 type GridState = {
   grid: number[][];
   initialGrid: number[][];
+  solvedGrid: number[][];
   selectedCell: SelectedCell | null;
   undoInputs: GridInputAction["payload"][];
 };
 
 type GridSetAction = {
   type: "SET";
-  payload: number[][];
+  payload: {
+    initialGrid: number[][];
+    solvedGrid: number[][];
+  };
 };
 
 type GridInputAction = {
@@ -23,6 +27,8 @@ type GridInputAction = {
 
 type GridUndoAction = { type: "UNDO" };
 
+type GridHintAction = { type: "HINT" };
+
 type GridSelectAction = {
   type: "SELECT";
   payload: SelectedCell;
@@ -32,6 +38,7 @@ type GridAction =
   | GridSetAction
   | GridInputAction
   | GridUndoAction
+  | GridHintAction
   | GridSelectAction;
 
 type GridContextValue = {
@@ -56,9 +63,11 @@ export const GridContext = createContext<GridContextValue | null>(null);
 function reducerGrid(state: GridState, action: GridAction) {
   switch (action.type) {
     case "SET":
+      const { initialGrid, solvedGrid } = action.payload;
       return {
-        grid: action.payload,
-        initialGrid: action.payload,
+        grid: initialGrid,
+        initialGrid,
+        solvedGrid,
         selectedCell: null,
         undoInputs: [],
       };
@@ -96,6 +105,29 @@ function reducerGrid(state: GridState, action: GridAction) {
       undoInputs.shift();
       return { ...state, grid, selectedCell, undoInputs };
     }
+    case "HINT": {
+      let hints: GridInputAction["payload"][] = [];
+      for (let i = 0; i < 9; i++)
+        for (let j = 0; j < 9; j++)
+          if (state.grid[i][j] !== state.solvedGrid[i][j])
+            hints.push({
+              value: state.solvedGrid[i][j],
+              index: { indexRow: i, indexCol: j },
+            });
+      if (hints.length === 0) return state;
+      const i = Math.floor(Math.random() * hints.length);
+      const {
+        value,
+        index: { indexRow, indexCol },
+      } = hints[i];
+
+      let grid = JSON.parse(JSON.stringify(state.grid));
+      let initialGrid = JSON.parse(JSON.stringify(state.initialGrid));
+      grid[indexRow][indexCol] = value;
+      initialGrid[indexRow][indexCol] = value;
+      let selectedCell = { ...hints[i], canModify: false };
+      return { ...state, grid, initialGrid, selectedCell };
+    }
     case "SELECT":
       return { ...state, selectedCell: action.payload };
     default:
@@ -111,6 +143,7 @@ export function GridContextProvider({
   const [stateGrid, dispatchGrid] = useReducer(reducerGrid, {
     grid: initialGrid,
     initialGrid,
+    solvedGrid: initialGrid,
     selectedCell: null,
     undoInputs: [],
   });

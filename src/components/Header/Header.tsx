@@ -11,7 +11,11 @@ export default function Header() {
 
   function handleSetDifficulty(difficulty: Difficulty, clueCount: number) {
     setStateApp({ difficulty });
-    dispatchGrid({ type: "SET", payload: generateSudoku(clueCount).sudoku });
+    const sudoku = generateSudoku(clueCount);
+    dispatchGrid({
+      type: "SET",
+      payload: { initialGrid: sudoku.sudoku, solvedGrid: sudoku.solution },
+    });
   }
 
   return (

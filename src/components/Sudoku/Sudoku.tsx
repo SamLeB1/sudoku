@@ -107,7 +107,11 @@ export default function Sudoku() {
   }
 
   useEffect(() => {
-    dispatchGrid({ type: "SET", payload: generateSudoku(40).sudoku });
+    const sudoku = generateSudoku(40);
+    dispatchGrid({
+      type: "SET",
+      payload: { initialGrid: sudoku.sudoku, solvedGrid: sudoku.solution },
+    });
   }, []);
 
   return (
