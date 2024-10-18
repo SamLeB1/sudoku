@@ -1,6 +1,9 @@
 import useAppContext from "../../hooks/useAppContext.tsx";
 import useGridContext from "../../hooks/useGridContext.tsx";
 import generateSudoku from "../../utils/generateSudoku.ts";
+import iconUndo from "../../assets/images/icon-undo.svg";
+import iconErase from "../../assets/images/icon-erase.svg";
+import iconHint from "../../assets/images/icon-hint.svg";
 import "./InputButtons.css";
 
 export default function InputButtons() {
@@ -35,21 +38,21 @@ export default function InputButtons() {
     <div className="input-buttons">
       <div className="action-buttons">
         <div className="btn-action">
-          <button
-            type="button"
-            onClick={() => dispatchGrid({ type: "UNDO" })}
-          />
+          <button type="button" onClick={() => dispatchGrid({ type: "UNDO" })}>
+            <img src={iconUndo} alt="" />
+          </button>
           <p>Undo</p>
         </div>
         <div className="btn-action">
-          <button type="button" onClick={() => handleClick(0)} />
+          <button type="button" onClick={() => handleClick(0)}>
+            <img src={iconErase} alt="" />
+          </button>
           <p>Erase</p>
         </div>
         <div className="btn-action">
-          <button
-            type="button"
-            onClick={() => dispatchGrid({ type: "HINT" })}
-          />
+          <button type="button" onClick={() => dispatchGrid({ type: "HINT" })}>
+            <img src={iconHint} alt="" />
+          </button>
           <p>Hint</p>
         </div>
       </div>

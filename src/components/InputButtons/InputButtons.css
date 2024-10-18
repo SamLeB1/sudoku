@@ -22,8 +22,11 @@
 .input-buttons .btn-action button:hover {
   background-color: #cbd5e8;
 }
+.input-buttons .btn-action img {
+  height: 40px;
+  width: 40px;
+}
 .input-buttons .btn-action p {
-  color: #112d4e;
   margin: 0;
   text-align: center;
 }
