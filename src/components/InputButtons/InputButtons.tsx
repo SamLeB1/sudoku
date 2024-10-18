@@ -7,7 +7,7 @@ import iconHint from "../../assets/images/icon-hint.svg";
 import "./InputButtons.css";
 
 export default function InputButtons() {
-  const { stateApp } = useAppContext();
+  const { stateApp, setStateApp } = useAppContext();
   const { stateGrid, dispatchGrid } = useGridContext();
 
   function handleClick(value: number) {
@@ -32,6 +32,7 @@ export default function InputButtons() {
       type: "SET",
       payload: { initialGrid: sudoku.sudoku, solvedGrid: sudoku.solution },
     });
+    setStateApp((prevState) => ({ ...prevState, resetTime: true }));
   }
 
   return (

@@ -10,7 +10,7 @@ export default function Header() {
   const { dispatchGrid } = useGridContext();
 
   function handleSetDifficulty(difficulty: Difficulty, clueCount: number) {
-    setStateApp({ difficulty });
+    setStateApp({ difficulty, resetTime: true });
     const sudoku = generateSudoku(clueCount);
     dispatchGrid({
       type: "SET",
