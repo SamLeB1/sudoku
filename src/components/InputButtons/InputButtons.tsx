@@ -39,19 +39,31 @@ export default function InputButtons() {
     <div className="input-buttons">
       <div className="action-buttons">
         <div className="btn-action">
-          <button type="button" onClick={() => dispatchGrid({ type: "UNDO" })}>
+          <button
+            type="button"
+            disabled={stateGrid.isSolved}
+            onClick={() => dispatchGrid({ type: "UNDO" })}
+          >
             <img src={iconUndo} alt="" />
           </button>
           <p>Undo</p>
         </div>
         <div className="btn-action">
-          <button type="button" onClick={() => handleClick(0)}>
+          <button
+            type="button"
+            disabled={stateGrid.isSolved}
+            onClick={() => handleClick(0)}
+          >
             <img src={iconErase} alt="" />
           </button>
           <p>Erase</p>
         </div>
         <div className="btn-action">
-          <button type="button" onClick={() => dispatchGrid({ type: "HINT" })}>
+          <button
+            type="button"
+            disabled={stateGrid.isSolved}
+            onClick={() => dispatchGrid({ type: "HINT" })}
+          >
             <img src={iconHint} alt="" />
           </button>
           <p>Hint</p>
@@ -61,6 +73,7 @@ export default function InputButtons() {
         <button
           className="btn-number"
           type="button"
+          disabled={stateGrid.isSolved}
           onClick={() => handleClick(1)}
         >
           1
@@ -68,6 +81,7 @@ export default function InputButtons() {
         <button
           className="btn-number"
           type="button"
+          disabled={stateGrid.isSolved}
           onClick={() => handleClick(2)}
         >
           2
@@ -75,6 +89,7 @@ export default function InputButtons() {
         <button
           className="btn-number"
           type="button"
+          disabled={stateGrid.isSolved}
           onClick={() => handleClick(3)}
         >
           3
@@ -82,6 +97,7 @@ export default function InputButtons() {
         <button
           className="btn-number"
           type="button"
+          disabled={stateGrid.isSolved}
           onClick={() => handleClick(4)}
         >
           4
@@ -89,6 +105,7 @@ export default function InputButtons() {
         <button
           className="btn-number"
           type="button"
+          disabled={stateGrid.isSolved}
           onClick={() => handleClick(5)}
         >
           5
@@ -96,6 +113,7 @@ export default function InputButtons() {
         <button
           className="btn-number"
           type="button"
+          disabled={stateGrid.isSolved}
           onClick={() => handleClick(6)}
         >
           6
@@ -103,6 +121,7 @@ export default function InputButtons() {
         <button
           className="btn-number"
           type="button"
+          disabled={stateGrid.isSolved}
           onClick={() => handleClick(7)}
         >
           7
@@ -110,6 +129,7 @@ export default function InputButtons() {
         <button
           className="btn-number"
           type="button"
+          disabled={stateGrid.isSolved}
           onClick={() => handleClick(8)}
         >
           8
@@ -117,6 +137,7 @@ export default function InputButtons() {
         <button
           className="btn-number"
           type="button"
+          disabled={stateGrid.isSolved}
           onClick={() => handleClick(9)}
         >
           9

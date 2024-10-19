@@ -1,7 +1,5 @@
-import { useEffect } from "react";
 import useGridContext from "../../hooks/useGridContext.tsx";
 import Cell from "../Cell/Cell.tsx";
-import generateSudoku from "../../utils/generateSudoku.ts";
 import "./Sudoku.css";
 
 export type Index = {
@@ -16,7 +14,7 @@ export type SelectedCell = {
 };
 
 export default function Sudoku() {
-  const { stateGrid, dispatchGrid } = useGridContext();
+  const { stateGrid } = useGridContext();
   const blocks = getBlocks();
 
   function getBlocks() {
@@ -105,14 +103,6 @@ export default function Sudoku() {
       return true;
     return false;
   }
-
-  useEffect(() => {
-    const sudoku = generateSudoku(40);
-    dispatchGrid({
-      type: "SET",
-      payload: { initialGrid: sudoku.sudoku, solvedGrid: sudoku.solution },
-    });
-  }, []);
 
   return (
     <div className="sudoku">

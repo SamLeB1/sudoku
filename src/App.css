@@ -13,3 +13,6 @@
 .App .sudoku {
   margin-right: 2rem;
 }
+.App .win-msg {
+  text-align: center;
+}

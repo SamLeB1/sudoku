@@ -1,5 +1,6 @@
 import { createContext, useReducer } from "react";
 import { Index, SelectedCell } from "../components/Sudoku/Sudoku.tsx";
+import generateSudoku from "../utils/generateSudoku.ts";
 
 type GridState = {
   grid: number[][];
@@ -8,6 +9,7 @@ type GridState = {
   selectedCell: SelectedCell | null;
   undoInputs: GridInputAction["payload"][];
   hintCount: number;
+  isSolved: boolean;
 };
 
 type GridSetAction = {
@@ -47,19 +49,16 @@ type GridContextValue = {
   dispatchGrid: React.Dispatch<GridAction>;
 };
 
-const initialGrid = [
-  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-];
+const sudoku = generateSudoku(40);
 
 export const GridContext = createContext<GridContextValue | null>(null);
+
+function isEqualSudoku(sudoku1: number[][], sudoku2: number[][]) {
+  for (let i = 0; i < 9; i++)
+    for (let j = 0; j < 9; j++)
+      if (sudoku1[i][j] !== sudoku2[i][j]) return false;
+  return true;
+}
 
 function reducerGrid(state: GridState, action: GridAction) {
   switch (action.type) {
@@ -72,6 +71,7 @@ function reducerGrid(state: GridState, action: GridAction) {
         selectedCell: null,
         undoInputs: [],
         hintCount: 0,
+        isSolved: false,
       };
     case "INPUT": {
       const {
@@ -82,14 +82,15 @@ function reducerGrid(state: GridState, action: GridAction) {
       let grid = JSON.parse(JSON.stringify(state.grid));
       grid[indexRow][indexCol] = value;
 
-      let selectedCell = { ...action.payload, canModify: true };
-
       let undoInputs = JSON.parse(JSON.stringify(state.undoInputs));
       undoInputs.unshift({
         value: state.grid[indexRow][indexCol],
         index: { indexRow, indexCol },
       });
-      return { ...state, grid, selectedCell, undoInputs };
+
+      const selectedCell = { ...action.payload, canModify: true };
+      const isSolved = isEqualSudoku(grid, state.solvedGrid);
+      return { ...state, grid, selectedCell, undoInputs, isSolved };
     }
     case "UNDO": {
       if (state.undoInputs.length === 0) return state;
@@ -101,11 +102,12 @@ function reducerGrid(state: GridState, action: GridAction) {
       let grid = JSON.parse(JSON.stringify(state.grid));
       grid[indexRow][indexCol] = value;
 
-      let selectedCell = { ...state.undoInputs[0], canModify: true };
-
       let undoInputs = JSON.parse(JSON.stringify(state.undoInputs));
       undoInputs.shift();
-      return { ...state, grid, selectedCell, undoInputs };
+
+      const selectedCell = { ...state.undoInputs[0], canModify: true };
+      const isSolved = isEqualSudoku(grid, state.solvedGrid);
+      return { ...state, grid, selectedCell, undoInputs, isSolved };
     }
     case "HINT": {
       let hints: GridInputAction["payload"][] = [];
@@ -137,6 +139,7 @@ function reducerGrid(state: GridState, action: GridAction) {
 
       const selectedCell = { ...hints[i], canModify: false };
       const hintCount = state.hintCount + 1;
+      const isSolved = isEqualSudoku(grid, state.solvedGrid);
       return {
         ...state,
         grid,
@@ -144,6 +147,7 @@ function reducerGrid(state: GridState, action: GridAction) {
         selectedCell,
         undoInputs,
         hintCount,
+        isSolved,
       };
     }
     case "SELECT":
@@ -159,12 +163,13 @@ export function GridContextProvider({
   children: React.ReactNode;
 }) {
   const [stateGrid, dispatchGrid] = useReducer(reducerGrid, {
-    grid: initialGrid,
-    initialGrid,
-    solvedGrid: initialGrid,
+    grid: sudoku.sudoku,
+    initialGrid: sudoku.sudoku,
+    solvedGrid: sudoku.solution,
     selectedCell: null,
     undoInputs: [],
     hintCount: 0,
+    isSolved: false,
   });
 
   return (
