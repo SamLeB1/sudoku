@@ -7,12 +7,20 @@
 }
 .App .game-info {
   display: flex;
-  gap: 1rem;
+  font-size: 0.875rem;
   margin-bottom: 0.5rem;
+}
+.App .info-difficulty {
+  margin-right: 1rem;
+}
+.App .info-hints {
+  margin-right: 1rem;
 }
 .App .sudoku {
   margin-right: 2rem;
 }
 .App .win-msg {
+  font-size: 1.5rem;
+  margin: 2rem 0;
   text-align: center;
 }

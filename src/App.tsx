@@ -14,7 +14,7 @@ export default function App() {
     <div className="App">
       <Header />
       {stateGrid.isSolved && (
-        <h2 className="win-msg">Well done! Sudoku complete.</h2>
+        <div className="win-msg">Well done! Sudoku complete.</div>
       )}
       <div className="game">
         <div className="game-info">

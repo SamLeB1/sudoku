@@ -23,10 +23,14 @@
   background-color: #cbd5e8;
 }
 .input-buttons .btn-action img {
+  filter: brightness(0) saturate(100%) invert(42%) sepia(44%) saturate(641%)
+    hue-rotate(172deg) brightness(91%) contrast(93%);
   height: 40px;
   width: 40px;
 }
 .input-buttons .btn-action p {
+  color: #3f72af;
+  font-size: 0.875rem;
   margin: 0;
   text-align: center;
 }
@@ -40,7 +44,7 @@
   background-color: #dbe2ef;
   border: none;
   border-radius: 8px;
-  color: #112d4e;
+  color: #3f72af;
   cursor: pointer;
   font-size: 2rem;
   padding: 0;
@@ -60,5 +64,5 @@
   width: 100%;
 }
 .input-buttons .btn-new-game:hover {
-  background-color: #3c6ca6;
+  background-color: #4b7fbe;
 }

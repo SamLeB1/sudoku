@@ -26,7 +26,7 @@ export default function Cell({
     ...(highlights.isSameNumber &&
       value !== 0 && { backgroundColor: "hsl(60, 100%, 90%)" }),
     ...(isSelected && { backgroundColor: "hsl(240, 100%, 90%)" }),
-    ...(canModify ? { color: "#3f72af" } : { fontWeight: "bold" }),
+    ...(canModify && { color: "#3f72af", fontStyle: "italic" }),
   };
 
   return (
