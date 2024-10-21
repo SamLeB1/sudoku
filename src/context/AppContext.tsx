@@ -3,6 +3,7 @@ import { createContext, useState } from "react";
 type AppState = {
   difficulty: "Easy" | "Medium" | "Hard" | "Expert";
   resetTime: boolean;
+  isNotesMode: boolean;
 };
 
 type AppContextValue = {
@@ -20,6 +21,7 @@ export function AppContextProvider({
   const [stateApp, setStateApp] = useState<AppState>({
     difficulty: "Easy",
     resetTime: false,
+    isNotesMode: false,
   });
 
   return (

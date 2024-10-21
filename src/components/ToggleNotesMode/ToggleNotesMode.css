@@ -1,0 +1,24 @@
+.toggle-notes-mode .btn-off {
+  background-color: hsl(0, 100%, 50%);
+  border: none;
+  border-radius: 16px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
+}
+.toggle-notes-mode .btn-off:hover {
+  background-color: hsl(0, 100%, 45%);
+}
+.toggle-notes-mode .btn-on {
+  background-color: hsl(120, 100%, 50%);
+  border: none;
+  border-radius: 16px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
+}
+.toggle-notes-mode .btn-on:hover {
+  background-color: hsl(120, 100%, 45%);
+}

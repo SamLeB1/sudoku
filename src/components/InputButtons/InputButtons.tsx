@@ -32,7 +32,11 @@ export default function InputButtons() {
       type: "SET",
       payload: { initialGrid: sudoku.sudoku, solvedGrid: sudoku.solution },
     });
-    setStateApp((prevState) => ({ ...prevState, resetTime: true }));
+    setStateApp((prevState) => ({
+      ...prevState,
+      resetTime: true,
+      isNotesMode: false,
+    }));
   }
 
   return (

@@ -6,9 +6,14 @@
   display: flex;
 }
 .App .game-info {
+  align-items: center;
   display: flex;
   font-size: 0.875rem;
+  justify-content: space-between;
   margin-bottom: 0.5rem;
+}
+.App .info-container {
+  display: flex;
 }
 .App .info-difficulty {
   margin-right: 1rem;
