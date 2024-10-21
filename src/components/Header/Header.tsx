@@ -1,22 +1,10 @@
 import useAppContext from "../../hooks/useAppContext.tsx";
-import useGridContext from "../../hooks/useGridContext.tsx";
-import generateSudoku from "../../utils/generateSudoku.ts";
+import useNewGame from "../../hooks/useNewGame.tsx";
 import "./Header.css";
 
-type Difficulty = "Easy" | "Medium" | "Hard" | "Expert";
-
 export default function Header() {
-  const { stateApp, setStateApp } = useAppContext();
-  const { dispatchGrid } = useGridContext();
-
-  function handleSetDifficulty(difficulty: Difficulty, clueCount: number) {
-    setStateApp({ difficulty, resetTime: true, isNotesMode: false });
-    const sudoku = generateSudoku(clueCount);
-    dispatchGrid({
-      type: "SET",
-      payload: { initialGrid: sudoku.sudoku, solvedGrid: sudoku.solution },
-    });
-  }
+  const { stateApp } = useAppContext();
+  const newGame = useNewGame();
 
   return (
     <header>
@@ -28,7 +16,7 @@ export default function Header() {
           style={{
             ...(stateApp.difficulty === "Easy" && { color: "#3f72af" }),
           }}
-          onClick={() => handleSetDifficulty("Easy", 40)}
+          onClick={() => newGame("Easy")}
         >
           Easy
         </button>
@@ -38,7 +26,7 @@ export default function Header() {
           style={{
             ...(stateApp.difficulty === "Medium" && { color: "#3f72af" }),
           }}
-          onClick={() => handleSetDifficulty("Medium", 35)}
+          onClick={() => newGame("Medium")}
         >
           Medium
         </button>
@@ -48,7 +36,7 @@ export default function Header() {
           style={{
             ...(stateApp.difficulty === "Hard" && { color: "#3f72af" }),
           }}
-          onClick={() => handleSetDifficulty("Hard", 30)}
+          onClick={() => newGame("Hard")}
         >
           Hard
         </button>
@@ -58,7 +46,7 @@ export default function Header() {
           style={{
             ...(stateApp.difficulty === "Expert" && { color: "#3f72af" }),
           }}
-          onClick={() => handleSetDifficulty("Expert", 26)}
+          onClick={() => newGame("Expert")}
         >
           Expert
         </button>

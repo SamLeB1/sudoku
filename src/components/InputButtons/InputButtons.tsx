@@ -1,14 +1,15 @@
 import useAppContext from "../../hooks/useAppContext.tsx";
 import useGridContext from "../../hooks/useGridContext.tsx";
-import generateSudoku from "../../utils/generateSudoku.ts";
+import useNewGame from "../../hooks/useNewGame.tsx";
 import iconUndo from "../../assets/images/icon-undo.svg";
 import iconErase from "../../assets/images/icon-erase.svg";
 import iconHint from "../../assets/images/icon-hint.svg";
 import "./InputButtons.css";
 
 export default function InputButtons() {
-  const { stateApp, setStateApp } = useAppContext();
+  const { stateApp } = useAppContext();
   const { stateGrid, dispatchGrid } = useGridContext();
+  const newGame = useNewGame();
 
   function handleClick(value: number) {
     if (stateGrid.selectedCell?.canModify)
@@ -16,27 +17,6 @@ export default function InputButtons() {
         type: "INPUT",
         payload: { value, index: stateGrid.selectedCell.index },
       });
-  }
-
-  function handleNewGame() {
-    const clueCount =
-      stateApp.difficulty === "Easy"
-        ? 40
-        : stateApp.difficulty === "Medium"
-        ? 35
-        : stateApp.difficulty === "Hard"
-        ? 30
-        : 26;
-    const sudoku = generateSudoku(clueCount);
-    dispatchGrid({
-      type: "SET",
-      payload: { initialGrid: sudoku.sudoku, solvedGrid: sudoku.solution },
-    });
-    setStateApp((prevState) => ({
-      ...prevState,
-      resetTime: true,
-      isNotesMode: false,
-    }));
   }
 
   return (
@@ -147,7 +127,11 @@ export default function InputButtons() {
           9
         </button>
       </div>
-      <button className="btn-new-game" type="button" onClick={handleNewGame}>
+      <button
+        className="btn-new-game"
+        type="button"
+        onClick={() => newGame(stateApp.difficulty)}
+      >
         New Game
       </button>
     </div>
