@@ -6,6 +6,7 @@ type GridState = {
   grid: number[][];
   initialGrid: number[][];
   solvedGrid: number[][];
+  notes: number[][][];
   selectedCell: SelectedCell | null;
   undoInputs: GridInputAction["payload"][];
   hintCount: number;
@@ -28,6 +29,19 @@ type GridInputAction = {
   };
 };
 
+type GridNoteAction = {
+  type: "NOTE";
+  payload: {
+    value: number;
+    index: Index;
+  };
+};
+
+type GridEraseAction = {
+  type: "ERASE";
+  payload: Index;
+};
+
 type GridUndoAction = { type: "UNDO" };
 
 type GridHintAction = { type: "HINT" };
@@ -40,6 +54,8 @@ type GridSelectAction = {
 type GridAction =
   | GridSetAction
   | GridInputAction
+  | GridNoteAction
+  | GridEraseAction
   | GridUndoAction
   | GridHintAction
   | GridSelectAction;
@@ -50,6 +66,18 @@ type GridContextValue = {
 };
 
 const sudoku = generateSudoku(40);
+
+const initNotes: number[][][] = [
+  [[], [], [], [], [], [], [], [], []],
+  [[], [], [], [], [], [], [], [], []],
+  [[], [], [], [], [], [], [], [], []],
+  [[], [], [], [], [], [], [], [], []],
+  [[], [], [], [], [], [], [], [], []],
+  [[], [], [], [], [], [], [], [], []],
+  [[], [], [], [], [], [], [], [], []],
+  [[], [], [], [], [], [], [], [], []],
+  [[], [], [], [], [], [], [], [], []],
+];
 
 export const GridContext = createContext<GridContextValue | null>(null);
 
@@ -68,6 +96,7 @@ function reducerGrid(state: GridState, action: GridAction) {
         grid: initialGrid,
         initialGrid,
         solvedGrid,
+        notes: initNotes,
         selectedCell: null,
         undoInputs: [],
         hintCount: 0,
@@ -91,6 +120,53 @@ function reducerGrid(state: GridState, action: GridAction) {
       const selectedCell = { ...action.payload, canModify: true };
       const isSolved = isEqualSudoku(grid, state.solvedGrid);
       return { ...state, grid, selectedCell, undoInputs, isSolved };
+    }
+    case "NOTE": {
+      const {
+        value,
+        index: { indexRow, indexCol },
+      } = action.payload;
+      if (state.notes[indexRow][indexCol].includes(value)) return state;
+
+      let notes = JSON.parse(JSON.stringify(state.notes));
+      notes[indexRow][indexCol].push(value);
+      const selectedCell = {
+        value: 0,
+        index: { indexRow, indexCol },
+        canModify: true,
+      };
+      if (state.grid[indexRow][indexCol] === 0)
+        return { ...state, notes, selectedCell };
+
+      let grid = JSON.parse(JSON.stringify(state.grid));
+      grid[indexRow][indexCol] = 0;
+      let undoInputs = JSON.parse(JSON.stringify(state.undoInputs));
+      undoInputs.unshift({
+        value: state.grid[indexRow][indexCol],
+        index: { indexRow, indexCol },
+      });
+      return { ...state, grid, notes, selectedCell, undoInputs };
+    }
+    case "ERASE": {
+      const { indexRow, indexCol } = action.payload;
+      let grid = JSON.parse(JSON.stringify(state.grid));
+      let notes = JSON.parse(JSON.stringify(state.notes));
+      grid[indexRow][indexCol] = 0;
+      notes[indexRow][indexCol] = [];
+      const selectedCell = {
+        value: 0,
+        index: { indexRow, indexCol },
+        canModify: true,
+      };
+      if (state.grid[indexRow][indexCol] === 0)
+        return { ...state, grid, notes, selectedCell };
+
+      let undoInputs = JSON.parse(JSON.stringify(state.undoInputs));
+      undoInputs.unshift({
+        value: state.grid[indexRow][indexCol],
+        index: { indexRow, indexCol },
+      });
+      return { ...state, grid, notes, selectedCell, undoInputs };
     }
     case "UNDO": {
       if (state.undoInputs.length === 0) return state;
@@ -166,6 +242,7 @@ export function GridContextProvider({
     grid: sudoku.sudoku,
     initialGrid: sudoku.sudoku,
     solvedGrid: sudoku.solution,
+    notes: initNotes,
     selectedCell: null,
     undoInputs: [],
     hintCount: 0,

@@ -11,12 +11,24 @@ export default function InputButtons() {
   const { stateGrid, dispatchGrid } = useGridContext();
   const newGame = useNewGame();
 
-  function handleClick(value: number) {
+  function handleNumberInput(value: number) {
+    if (stateGrid.selectedCell?.canModify) {
+      if (stateApp.isNotesMode)
+        dispatchGrid({
+          type: "NOTE",
+          payload: { value, index: stateGrid.selectedCell.index },
+        });
+      else
+        dispatchGrid({
+          type: "INPUT",
+          payload: { value, index: stateGrid.selectedCell.index },
+        });
+    }
+  }
+
+  function handleErase() {
     if (stateGrid.selectedCell?.canModify)
-      dispatchGrid({
-        type: "INPUT",
-        payload: { value, index: stateGrid.selectedCell.index },
-      });
+      dispatchGrid({ type: "ERASE", payload: stateGrid.selectedCell.index });
   }
 
   return (
@@ -36,7 +48,7 @@ export default function InputButtons() {
           <button
             type="button"
             disabled={stateGrid.isSolved}
-            onClick={() => handleClick(0)}
+            onClick={handleErase}
           >
             <img src={iconErase} alt="" />
           </button>
@@ -58,7 +70,7 @@ export default function InputButtons() {
           className="btn-number"
           type="button"
           disabled={stateGrid.isSolved}
-          onClick={() => handleClick(1)}
+          onClick={() => handleNumberInput(1)}
         >
           1
         </button>
@@ -66,7 +78,7 @@ export default function InputButtons() {
           className="btn-number"
           type="button"
           disabled={stateGrid.isSolved}
-          onClick={() => handleClick(2)}
+          onClick={() => handleNumberInput(2)}
         >
           2
         </button>
@@ -74,7 +86,7 @@ export default function InputButtons() {
           className="btn-number"
           type="button"
           disabled={stateGrid.isSolved}
-          onClick={() => handleClick(3)}
+          onClick={() => handleNumberInput(3)}
         >
           3
         </button>
@@ -82,7 +94,7 @@ export default function InputButtons() {
           className="btn-number"
           type="button"
           disabled={stateGrid.isSolved}
-          onClick={() => handleClick(4)}
+          onClick={() => handleNumberInput(4)}
         >
           4
         </button>
@@ -90,7 +102,7 @@ export default function InputButtons() {
           className="btn-number"
           type="button"
           disabled={stateGrid.isSolved}
-          onClick={() => handleClick(5)}
+          onClick={() => handleNumberInput(5)}
         >
           5
         </button>
@@ -98,7 +110,7 @@ export default function InputButtons() {
           className="btn-number"
           type="button"
           disabled={stateGrid.isSolved}
-          onClick={() => handleClick(6)}
+          onClick={() => handleNumberInput(6)}
         >
           6
         </button>
@@ -106,7 +118,7 @@ export default function InputButtons() {
           className="btn-number"
           type="button"
           disabled={stateGrid.isSolved}
-          onClick={() => handleClick(7)}
+          onClick={() => handleNumberInput(7)}
         >
           7
         </button>
@@ -114,7 +126,7 @@ export default function InputButtons() {
           className="btn-number"
           type="button"
           disabled={stateGrid.isSolved}
-          onClick={() => handleClick(8)}
+          onClick={() => handleNumberInput(8)}
         >
           8
         </button>
@@ -122,7 +134,7 @@ export default function InputButtons() {
           className="btn-number"
           type="button"
           disabled={stateGrid.isSolved}
-          onClick={() => handleClick(9)}
+          onClick={() => handleNumberInput(9)}
         >
           9
         </button>
