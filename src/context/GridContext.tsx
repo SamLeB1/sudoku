@@ -130,6 +130,7 @@ function reducerGrid(state: GridState, action: GridAction) {
 
       let notes = JSON.parse(JSON.stringify(state.notes));
       notes[indexRow][indexCol].push(value);
+      notes[indexRow][indexCol].sort();
       const selectedCell = {
         value: 0,
         index: { indexRow, indexCol },

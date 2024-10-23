@@ -120,6 +120,9 @@ export default function Sudoku() {
                     key={k}
                     value={cell}
                     index={indexGrid}
+                    notes={
+                      stateGrid.notes[indexGrid.indexRow][indexGrid.indexCol]
+                    }
                     highlights={{
                       ...(stateGrid.selectedCell
                         ? {

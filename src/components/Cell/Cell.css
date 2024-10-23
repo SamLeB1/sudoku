@@ -4,8 +4,21 @@
   border: 1px solid #000;
   display: flex;
   font-size: 1.5rem;
-  height: 40px;
+  height: 44px;
   justify-content: center;
   user-select: none;
-  width: 40px;
+  width: 44px;
+}
+.cell-notes {
+  background-color: #fff;
+  border: 1px solid #000;
+  color: hsl(0, 0%, 50%);
+  display: grid;
+  font-size: 0.75rem;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  height: 44px;
+  place-items: center;
+  user-select: none;
+  width: 44px;
 }
