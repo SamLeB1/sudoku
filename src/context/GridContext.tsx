@@ -111,6 +111,12 @@ function reducerGrid(state: GridState, action: GridAction) {
       let grid = JSON.parse(JSON.stringify(state.grid));
       grid[indexRow][indexCol] = value;
 
+      let notes = state.notes;
+      if (notes[indexRow][indexCol].length > 0) {
+        notes = JSON.parse(JSON.stringify(state.notes));
+        notes[indexRow][indexCol] = [];
+      }
+
       let undoInputs = JSON.parse(JSON.stringify(state.undoInputs));
       undoInputs.unshift({
         value: state.grid[indexRow][indexCol],
@@ -119,7 +125,7 @@ function reducerGrid(state: GridState, action: GridAction) {
 
       const selectedCell = { ...action.payload, canModify: true };
       const isSolved = isEqualSudoku(grid, state.solvedGrid);
-      return { ...state, grid, selectedCell, undoInputs, isSolved };
+      return { ...state, grid, notes, selectedCell, undoInputs, isSolved };
     }
     case "NOTE": {
       const {
@@ -179,12 +185,18 @@ function reducerGrid(state: GridState, action: GridAction) {
       let grid = JSON.parse(JSON.stringify(state.grid));
       grid[indexRow][indexCol] = value;
 
+      let notes = state.notes;
+      if (notes[indexRow][indexCol].length > 0) {
+        notes = JSON.parse(JSON.stringify(state.notes));
+        notes[indexRow][indexCol] = [];
+      }
+
       let undoInputs = JSON.parse(JSON.stringify(state.undoInputs));
       undoInputs.shift();
 
       const selectedCell = { ...state.undoInputs[0], canModify: true };
       const isSolved = isEqualSudoku(grid, state.solvedGrid);
-      return { ...state, grid, selectedCell, undoInputs, isSolved };
+      return { ...state, grid, notes, selectedCell, undoInputs, isSolved };
     }
     case "HINT": {
       let hints: GridInputAction["payload"][] = [];
@@ -207,6 +219,12 @@ function reducerGrid(state: GridState, action: GridAction) {
       grid[indexRow][indexCol] = value;
       initialGrid[indexRow][indexCol] = value;
 
+      let notes = state.notes;
+      if (notes[indexRow][indexCol].length > 0) {
+        notes = JSON.parse(JSON.stringify(state.notes));
+        notes[indexRow][indexCol] = [];
+      }
+
       const undoInputs = state.undoInputs.filter((undoInput) => {
         return (
           undoInput.index.indexRow !== indexRow ||
@@ -221,6 +239,7 @@ function reducerGrid(state: GridState, action: GridAction) {
         ...state,
         grid,
         initialGrid,
+        notes,
         selectedCell,
         undoInputs,
         hintCount,
