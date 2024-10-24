@@ -1,5 +1,5 @@
 .input-buttons {
-  --btn-size: 60px;
+  --btn-size: 68px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -46,7 +46,7 @@
   border-radius: 8px;
   color: #3f72af;
   cursor: pointer;
-  font-size: 2rem;
+  font-size: 2.5rem;
   padding: 0;
 }
 .input-buttons .btn-number:hover {

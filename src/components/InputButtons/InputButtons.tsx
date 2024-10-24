@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import useAppContext from "../../hooks/useAppContext.tsx";
 import useGridContext from "../../hooks/useGridContext.tsx";
 import useNewGame from "../../hooks/useNewGame.tsx";
@@ -30,6 +31,24 @@ export default function InputButtons() {
     if (stateGrid.selectedCell?.canModify)
       dispatchGrid({ type: "ERASE", payload: stateGrid.selectedCell.index });
   }
+
+  function handleKeyDown(e: KeyboardEvent) {
+    if (stateGrid.isSolved) return;
+    if (e.key === "1") handleNumberInput(1);
+    else if (e.key === "2") handleNumberInput(2);
+    else if (e.key === "3") handleNumberInput(3);
+    else if (e.key === "4") handleNumberInput(4);
+    else if (e.key === "5") handleNumberInput(5);
+    else if (e.key === "6") handleNumberInput(6);
+    else if (e.key === "7") handleNumberInput(7);
+    else if (e.key === "8") handleNumberInput(8);
+    else if (e.key === "9") handleNumberInput(9);
+  }
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [stateApp, stateGrid]);
 
   return (
     <div className="input-buttons">

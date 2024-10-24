@@ -107,6 +107,7 @@ function reducerGrid(state: GridState, action: GridAction) {
         value,
         index: { indexRow, indexCol },
       } = action.payload;
+      if (state.grid[indexRow][indexCol] === value) return state;
 
       let grid = JSON.parse(JSON.stringify(state.grid));
       grid[indexRow][indexCol] = value;
