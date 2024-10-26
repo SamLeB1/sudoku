@@ -22,3 +22,11 @@
 .toggle-notes-mode .btn-on:hover {
   background-color: hsl(120, 100%, 45%);
 }
+@media screen and (max-width: 700px) {
+  .toggle-notes-mode .btn-off {
+    display: block;
+  }
+  .toggle-notes-mode .btn-on {
+    display: block;
+  }
+}

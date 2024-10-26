@@ -66,3 +66,28 @@
 .input-buttons .btn-new-game:hover {
   background-color: #4b7fbe;
 }
+@media screen and (max-width: 700px) {
+  .input-buttons {
+    margin-bottom: 1rem;
+  }
+  .input-buttons .action-buttons {
+    justify-content: center;
+    margin-bottom: 1rem;
+    order: 1;
+  }
+  .input-buttons .btn-new-game {
+    margin: auto;
+    order: 2;
+    width: 50%;
+  }
+  .input-buttons .btn-number {
+    background-color: #fff;
+  }
+  .input-buttons .number-buttons {
+    gap: 0;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: none;
+    margin-bottom: 0.5rem;
+    order: 0;
+  }
+}

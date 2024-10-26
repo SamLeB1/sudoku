@@ -14,6 +14,7 @@
 }
 .App .info-container {
   display: flex;
+  margin-right: 1rem;
 }
 .App .info-difficulty {
   margin-right: 1rem;
@@ -28,4 +29,17 @@
   font-size: 1.5rem;
   margin: 2rem 0;
   text-align: center;
+}
+@media screen and (max-width: 700px) {
+  .App .game-display {
+    display: block;
+    text-align: center;
+  }
+  .App .game-info {
+    justify-content: center;
+    padding: 0 0.5rem;
+  }
+  .App .sudoku {
+    margin: 0 0 0.5rem;
+  }
 }

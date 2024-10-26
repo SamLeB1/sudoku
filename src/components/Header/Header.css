@@ -4,6 +4,7 @@ header {
   display: flex;
   justify-content: center;
   margin-bottom: 2rem;
+  overflow: auto;
   padding: 1rem;
 }
 header .btn-difficulty {
@@ -26,4 +27,12 @@ header .logo {
   font-size: 1.5rem;
   font-weight: bold;
   margin-right: 8rem;
+}
+@media screen and (max-width: 700px) {
+  header {
+    justify-content: space-between;
+  }
+  header .logo {
+    margin: 0;
+  }
 }
