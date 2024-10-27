@@ -22,6 +22,10 @@ header .btn-difficulty:hover {
 header .difficulty {
   display: flex;
 }
+header .difficulty-select {
+  font-size: 1rem;
+  padding: 0.125rem;
+}
 header .logo {
   color: #112d4e;
   font-size: 1.5rem;
