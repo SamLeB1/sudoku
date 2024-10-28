@@ -5,6 +5,7 @@ import Stopwatch from "./components/Stopwatch/Stopwatch.tsx";
 import ToggleNotesMode from "./components/ToggleNotesMode/ToggleNotesMode.tsx";
 import Sudoku from "./components/Sudoku/Sudoku.tsx";
 import InputButtons from "./components/InputButtons/InputButtons.tsx";
+import Info from "./components/Info/Info.tsx";
 import "./App.css";
 
 export default function App() {
@@ -33,6 +34,7 @@ export default function App() {
           <InputButtons />
         </div>
       </div>
+      <Info />
     </div>
   );
 }

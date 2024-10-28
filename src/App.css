@@ -1,5 +1,5 @@
 .App .game {
-  margin: auto;
+  margin: 0 auto 2rem;
   width: fit-content;
 }
 .App .game-display {
@@ -27,7 +27,7 @@
 }
 .App .win-msg {
   font-size: 1.5rem;
-  margin: 2rem 0;
+  margin: 2rem 0.5rem;
   text-align: center;
 }
 @media screen and (max-width: 700px) {
