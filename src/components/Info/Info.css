@@ -15,3 +15,12 @@
   margin: 0 0.5rem;
   padding: 1rem;
 }
+@media screen and (max-width: 700px) {
+  .info {
+    display: block;
+    padding: 1rem 0;
+  }
+  .info .info-card {
+    margin: 1rem;
+  }
+}
